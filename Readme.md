@@ -5,3 +5,5 @@
 ## Table of Contents
 - [1. AWS Well Architected Framework](AWS_Well_Architected_Framework.md)
 - [2. AWS Organizations](AWS_Organizations.md)
+- [3. AWS Compute](AWS_Compute.md)
+- [AWS SA Interview Questions](AWS_SA_Questions.md)
