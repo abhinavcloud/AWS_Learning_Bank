@@ -8,7 +8,23 @@ The first thing to understand that Lambda does remain always on. It is on demand
 
 If there is no request or no traffic there is no instance of lambda which is running. There is a subtle caveat in that which we will come to later.
 
-So, no traffic then there is no lambda. Now as soon as traffic hits the api gateway, lambda invocations start and lambda instances start coming up. Important thing to note here is that for one request there is only one lambda invocation. One to one mapping.
+So, no traffic then there is no lambda. Now as soon as traffic hits the api gateway, lambda invocations start and lambda instances start coming up. Important thing to note here is that for one request there is only one lambda invocation. Its one to one mapping.
+
+As soon as more traffic and requests starts coming in, more and more instance of lambda functions are invoke. But there is a limit. The no of concurrent lambda services which can be invoked depend on the **Reserved Concurrency** of the lambda function. By default its 1000 for an account (which can be increased by requestinng AWS to increase service quotas) and we can allcate from this pool to each service.
+Once the **Reserved Concurrency** limit is reached for any lambda service the incoming requests starts to get throttled.
+**Reserved Concurreny** is important because if we have many lambda services in our architecture then, its important that all services can scale up according to demand and not one service consumes all the reserved concurrency limit.
+
+Another important factore in lambda concurrency is **Provisioned Concurrency**. It is the no of concurrent lambda instances which are pre initialized to immediately serve any request.
+
+**Provisioned Concurrency** of a lambda function **can not* be greater than the **Reserved Concurrency**.
+
+Some other areas on lambdas we can look upon are the lambda initialization time. Its important to keep this time as low as possible so use light weight libraries or package libraries in local lambda layers.
+
+
+Now the next service we are going to talk about is EKS or Elastic Kubernetes Service
+Scaling of EKS is at two level. One level is the **worker node level* and the another level is at the **cluster level*.
+At the worker node level, the pods are running through deployments and their cpu and memonry requests and limits are set. This is monitored continously by the **Horizontal Pod Autoscalar** or **HPA**. HPA continously tracks the resource consumed for each deployment for which its defined. Based on the criteria set for the the deployment (for example Average Utilization at 50%), when the criteria is reached, the **Kube-Scheduler** at **control plane* triggers another pod so that the total average utilization comes down for the deployment. This scaling activities continues at the worker node level. 
+Now there comes a time, when multiple pods are scheduled and running and the total worker node (EC2 instance) cpu or memory is reached. At that time inside the worker node when **kube scheduler** triggers pod creation, there is no available cpu and memory for it. So it remains **Pending Unschedulable** staus. At this point the **Cluster Autoscalar or Karepnter** look for such pods and if found it provisoned another worker node (EC2 instance) via the Auto Scaling Group. Now the kube-scheduler finds available cpu/memory for the pod which is pending and scheduled and creates the pod in the new worker node (EC2 instance).
 
 
 
@@ -136,5 +152,20 @@ So, no traffic then there is no lambda. Now as soon as traffic hits the api gate
 ## 15. What is your favorite AWS Service and how would you improve it
 
 
-## What is AWS Service X
+## 16. What is High Availibility
+
+
+## 17. What is Microservice Design
+
+
+## 18. What are some Gen AI Use Cases
+
+
+## 19. What is MCP
+
+
+## 20. What is EDA
+
+
+## 21. How do you pick one service over another in a Microservice architecrure
 
