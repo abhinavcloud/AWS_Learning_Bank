@@ -1,6 +1,6 @@
 # AWS Solution Architect Interview — Leadership Principle STAR Answer Bank
 
-> Prepared from the provided `AWS_SA_Questions.md` technical answers and mapped to Amazon/AWS Leadership Principles.
+> Prepared from the provided [AWS SA Techincal Questions](AWS_SA_Quetions.md) technical answers and mapped to Amazon/AWS Leadership Principles.
 >
 > Usage: Treat the first line in each section as the kind of vague behavioural question an interviewer may ask. Do not answer with only theory. Start with the situation, then move into the technical decision, trade-off, action, and measurable result.
 

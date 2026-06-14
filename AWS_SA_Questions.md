@@ -1,4 +1,4 @@
-# AWS SA Questions
+# AWS SA Techincal Questions
 
 ## 1. How does Lambda and EKS Scale
 
