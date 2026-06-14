@@ -6,4 +6,5 @@
 - [1. AWS Well Architected Framework](AWS_Well_Architected_Framework.md)
 - [2. AWS Organizations](AWS_Organizations.md)
 - [3. AWS Compute](AWS_Compute.md)
-- [AWS SA Interview Questions](AWS_SA_Questions.md)
+- [4. AWS SA Technical Interview Questions](AWS_SA_Questions.md)
+- [5. AWS SA Leadership Princples/Behaviorial Interview Questions](AWS_SA_LP_STAR_Interview_Answer_Bank.md)
