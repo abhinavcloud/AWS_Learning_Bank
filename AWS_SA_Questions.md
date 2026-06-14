@@ -49,7 +49,7 @@ Another such example was using, Elasticache Serveless service to serve read requ
 
 ---
 
-## 4. What are some of the GenAI, Agentic AI and RAG use cases we can implement
+## 3. What are some of the GenAI, Agentic AI and RAG use cases we can implement
 
 **Generative AI** or Gen AI is built on Foundational Large Language Models that excel at understanding, analysing and generating unstructured data at scale.
 
@@ -69,7 +69,31 @@ Once the user submits a complain through the context window, the API Gateway tra
 
 ---
 
-## 6. Create or Explain a Microservice
+## 4. Create or Explain a Microservice
+
+The most important features of microservices are that they are independently deployable, maintained, invoked and executed without any dependencies. They have their own persistence layer and the failure of one microservice doesnt impact the functioning of the other microservices. Also each microservice can be a diffrernt service based on the use case and system requirements. For example, in the same architecture, for long running process we can use EC2 instances while for short workloads we can use Lambda functions. For relations between entities we can use RDS or Aurora and for faster performance we can use DynamoDB. Also they can be independently coded and implemented. This means that some microservices can be on nodeJS, some can be on Python or other can be on Go. This is called polyglot architecture.
+
+A great example of microservice architecture can be an Online Marketplace like Amazon.
+Where each functional requirement can be a different implementation of microservices inside the same ecosystem
+For example:
+    Sync Architecure
+        API GATEWAY -> /search -> Lambda -> OpenSearch
+        API GATEWAY -> /browse -> ECS Fargate -> ElastiCache Redis -> Aurora/RDS
+        API GATEWAY -> /cart -> EKS -> ElastiCache -> DynamoDB
+    EDS/ASync Architecture
+        Event Choreogaphy (Complex, Efficient, Operational Overhead)
+            Order Placed -> Event Bridge -> Payment -> Lambda -> 3rd Party -> Lambda ->  RDS
+                                        -> Inventory -> ECS -> Dynamo DB
+                                        -> Shipping -> EC2 -> RDS
+                                        -> Notifications -> SNS
+        Workflow Orchestration (Simple, Less Montioring, ACID Transactions)
+            Order Placed -> AWS Step Functions   -> Payment -> Lambda -> 3rd Party -> Lambda ->  RDS
+                                                 -> Inventory -> ECS -> Dynamo DB
+                                                 -> Shipping -> EC2 -> RDS
+                                                -> Notifications -> SNS
+        
+    
+
 
 
 ---
