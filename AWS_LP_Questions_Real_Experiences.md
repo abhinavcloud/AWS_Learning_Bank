@@ -149,13 +149,18 @@ Tell me about a time you designed for future scale instead of only solving the i
 **Think Big**
 
 ### STAR Answer
-**Situation:** For a marketplace or ticketing workload, the immediate requirement may start with a few APIs, but the future system can include search, browse, cart, order placement, payment, inventory, shipping, and notifications.
+**Situation:** At Telstra Invoicing domain we are always designing for scale. This is because we run daily billing cycles and generate multiple artifacts like invoices, receipts, collection letters, adjustments, refunds etc.
 
-**Task:** I needed to think beyond a single service and design an architecture that could scale into a broader ecosystem of independently deployable services.
+**Task:** The task was to implement scaling at each level and not just thinking of scale at a broader level. Also, it should have suitable services for appropriate workloads.
 
-**Action:** I designed the system as microservices with clear boundaries and independent persistence. Search could use API Gateway, Lambda, and OpenSearch. Browse could use ECS Fargate, ElastiCache, and Aurora or RDS. Cart could use EKS, ElastiCache, and DynamoDB. Order placement could trigger asynchronous workflows using EventBridge, SNS/SQS, Lambda, ECS, EC2, Step Functions, and downstream databases. I considered both event choreography and workflow orchestration depending on whether the priority was flexibility, monitoring simplicity, or transaction control.
+**Action:** At the application layer for long running workloads like running billing calculations for each customer and account, I provisoned EC2 instance. The EC2 instances were provsioned under Auto Scaling Group with health checks implemented so that the ALB can continously monitor for unhealthy instances. I put the approrpriate number of minimum and desired instances so that to manage the workload effectively. I used a warm pool of instances which were ready to serve traffic and also used lightweight AMIs and triggered EC2 instances via Launch Templates so that I can spin up them quickly.
 
-**Result:** The design allowed the application to grow from a few APIs into a larger distributed platform. It avoided creating a single tightly coupled system and instead created room for independent scaling, independent deployment, and technology choices based on each microservice’s requirement.
+At Database layer, I used RDS provisioned database with high availibility multi az deployment with read replicas and use RDS proxy to pool connection to the db incase of huge load. 
+
+Instead of persisiting temporary data into databse I used elasticache to hold them and used by application services wehenever required.
+
+
+**Result:** This design allowrd the application to scale quickly and perform reliably under high load and increases the pefformance efficiency by 25% while incresing reliabilty by 60%.
 
 ---
 
