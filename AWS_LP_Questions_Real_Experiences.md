@@ -92,7 +92,7 @@ Tell me about a time you learned a new cloud pattern and applied it to solve a b
 **Learn and Be Curious**
 
 ### STAR Answer
-**Situation:** I explored GenAI, RAG, and Agentic AI use cases for enterprise ticketing and service request handling, where the challenge was not just generating text but connecting enterprise knowledge with business tools.
+**Situation:** In Telstra, we are starting with our GenAI intiatives roadmaps. For this all teams were asked to submit GenAI ideas and Proof of Concepts which can be implemented at organization level.
 
 **Task:** The objective was to design a practical AI-assisted ticket creation and resolution flow using AWS services without sending unnecessary context or increasing token cost.
 
