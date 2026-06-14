@@ -93,9 +93,6 @@ For example:
                                                 -> Notifications -> SNS
         
     
-
-
-
 ---
 
 ## 7. How do you select or compare services on AWS
