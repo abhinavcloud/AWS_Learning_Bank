@@ -26,7 +26,7 @@ Scaling of EKS is at two level. One level is the **worker node level* and the an
 At the worker node level, the pods are running through deployments and their cpu and memonry requests and limits are set. This is monitored continously by the **Horizontal Pod Autoscalar** or **HPA**. HPA continously tracks the resource consumed for each deployment for which its defined. Based on the criteria set for the the deployment (for example Average Utilization at 50%), when the criteria is reached, the **Kube-Scheduler** at **control plane* schedules another pod so that the total average utilization comes down for the deployment. This scaling activities continues at the worker node level. 
 Now there comes a time, when multiple pods are scheduled and running and the total worker node (EC2 instance) cpu or memory is reached. At that time inside the worker node when **kube scheduler** scheudles pod, there is no available cpu and memory for it. So it remains **Pending Unschedulable** staus. At this point the **Cluster Autoscalar or Karepnter** look for such pods and if found it provisoned another worker node (EC2 instance) via the Auto Scaling Group for cluster Auto Scalar or EC2 Fleet for Karepenter. Now the kube-scheduler finds available cpu/memory for the pod which is pending and scheduled pod in the new worker node (EC2 instance).
 
-
+---
 
 ## 2. Have you used Well Architected Framework and How
 Thanks for the question. 
@@ -47,19 +47,37 @@ One such example of a trade-off between the well architected pillar I encounterd
 
 Another such example was using, Elasticache Serveless service to serve read request from lambdas inside the private VPCs. Since the lambdas were inside VPC, and Elasticache Serverless is not VPC bound, it created multiple vpc endpoints per AZ to create connections to the lambda services. This resulted in high performance but the cost of vpc endpoint was too high. To mititgae it we needed to provision the Elasticache inside VPC which increased operational overhead but reduced costs, because now lambdas could directly talk to Elasticache without the need for VPC Endpoints.
 
+---
 
+## 4. What are some of the GenAI, Agentic AI and RAG use cases we can implement
 
-## 4. What are some of the GenAI use cases we can implement
+**Generative AI** or Gen AI is built on Foundational Large Language Models that excel at understanding, analysing and generating unstructured data at scale.
 
+**RAG** or Retreival Augmented Generation helps in one of the major limitations of Gen AI which is understating, analysic and generating information specific to an enterprise or a use case which may or may not be part of the LLMs general models.
 
-## 5. What is RAG in AI
+**Agentic** AI is a set of software programs which are built on top of LLMs which can take independent autonomous descision and plan and execute a sequence of independent steps to complete the required tasks.
 
+A great example of enterprise level use case for these technologies is the creating customer tickets and service requests and handling them.
+
+First we have our local, entrprise data on our local databse. This can be fed into an Amazon Bedrock Embedding Large Language Model to create a Vector Database on OpenSearch or Kendra or S3 Vector DB. once this process is complete, it becomes our RAG Knowledge Base.
+
+Then we create our AI Agents on top of the Bedrock using any of the LLMs which uses MCP layer to connect the MCP servers which serve differnt tools like JIRA, Salesforce, or Confluence. Using MCP is a great way to leverage the tools and enahnce the capabilities of AI Agents because now the Agents can just trigger the MCP Client and decide which MCP server to connect to perform the set of actions on the respecitve tool.
+
+Next to decrease our token cost and context window we make rules that only the most essential information will go through the RAG Vector Database and the MCP Servers which is essential to perform the tasks. The API Gateway integrations will transforms the request into shorter contexts holding essential informations only.
+
+Once the user submits a complain through the context window, the API Gateway transforms the request. There will be SQS queue which will take the incoming requests. The AI Agent will take the incoming request from the queue and run it through the RAG Vector Database and then with the augmented information trigger the apprpriate MCP server to take actions on specific tools and then return the ticket no to the customer for tracking purpose.
+
+---
 
 ## 6. Create or Explain a Microservice
 
 
+---
+
 ## 7. How do you select or compare services on AWS
 
+
+---
 
 ## 8. How can you make your application scalable for big traffic day
 
@@ -90,20 +108,6 @@ Another such example was using, Elasticache Serveless service to serve read requ
 
 ---
 
-## 9. What is an AI Agent
-- AI Agents is a software program which uses LLM for reasoning and can autonomously and independenly chose best set of actions and their order of executions till task completion and complete the required tasks.
-- This is how AI Agents are diferent from conditional workflows and LLMs
-- Example: Let's say we are using an agent to fix an issue in an AWS resources
-    - The user can give the prompt to AI Agent
-    - The agent can decide what are the set of tasks in sequence or parallel which can be invoked.
-    - For example, getting logs from CloudWatch
-    - Then it analyses the logs from the Cloudwatch and analyse if the error is coming from upstream or not.
-    - Search the documentation to seek resolution
-    - Invoke another tool to fix the issue 
-    - Return Task Complete to the user.
-
-
-
 ## 10. How do you achieve DR for your cloud application
 
 - Disaster Recovery is a very important aspect for a Cloud Architecture which touches upon the Reliability, Performace Efficiency, Cost Optimization and Sustainability pillars of Well Architected Framework. 
@@ -121,7 +125,7 @@ Another such example was using, Elasticache Serveless service to serve read requ
 
     - Active Active: LOWEST/NO RTO, LOWEST/NO RPO: In this case the entire application is replicated across multiple region and the requests are served at both regions simultaneously using DNS Routing. The Databses are syncronsied and replicated across regions. In case of a disaster in one region, the other region now handles all the volume of traffic and scales accordingly.
 
-
+---
 
 ## 11. How do you secure your application on the cloud
 
@@ -161,22 +165,12 @@ Another such example was using, Elasticache Serveless service to serve read requ
 ## 13. Biggest challenge faces during desiging your application on AWS
 
 
-## 14. How do you pick one service over another in AWS
-
 
 ## 15. What is your favorite AWS Service and how would you improve it
 
 
 ## 16. What is High Availibility
 
-
-## 17. What is Microservice Design
-
-
-## 18. What are some Gen AI Use Cases
-
-
-## 19. What is MCP
 
 
 ## 20. What is EDA
