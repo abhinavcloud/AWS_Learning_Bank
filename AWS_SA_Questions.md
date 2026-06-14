@@ -4,7 +4,7 @@
 
 Thanks for the question. Lambda is the backbone of serverless compute however there are some important parameters that we need to understand if we are using lambdas as our compute service.
 
-The first thing to understand that Lambda does remain always on. It is on demand.
+The first thing to understand that Lambda does not remain always on. It is on demand.
 
 If there is no request or no traffic there is no instance of lambda which is running. There is a subtle caveat in that which we will come to later.
 
@@ -23,15 +23,30 @@ Some other areas on lambdas we can look upon are the lambda initialization time.
 
 Now the next service we are going to talk about is EKS or Elastic Kubernetes Service
 Scaling of EKS is at two level. One level is the **worker node level* and the another level is at the **cluster level*.
-At the worker node level, the pods are running through deployments and their cpu and memonry requests and limits are set. This is monitored continously by the **Horizontal Pod Autoscalar** or **HPA**. HPA continously tracks the resource consumed for each deployment for which its defined. Based on the criteria set for the the deployment (for example Average Utilization at 50%), when the criteria is reached, the **Kube-Scheduler** at **control plane* triggers another pod so that the total average utilization comes down for the deployment. This scaling activities continues at the worker node level. 
-Now there comes a time, when multiple pods are scheduled and running and the total worker node (EC2 instance) cpu or memory is reached. At that time inside the worker node when **kube scheduler** triggers pod creation, there is no available cpu and memory for it. So it remains **Pending Unschedulable** staus. At this point the **Cluster Autoscalar or Karepnter** look for such pods and if found it provisoned another worker node (EC2 instance) via the Auto Scaling Group. Now the kube-scheduler finds available cpu/memory for the pod which is pending and scheduled and creates the pod in the new worker node (EC2 instance).
+At the worker node level, the pods are running through deployments and their cpu and memonry requests and limits are set. This is monitored continously by the **Horizontal Pod Autoscalar** or **HPA**. HPA continously tracks the resource consumed for each deployment for which its defined. Based on the criteria set for the the deployment (for example Average Utilization at 50%), when the criteria is reached, the **Kube-Scheduler** at **control plane* schedules another pod so that the total average utilization comes down for the deployment. This scaling activities continues at the worker node level. 
+Now there comes a time, when multiple pods are scheduled and running and the total worker node (EC2 instance) cpu or memory is reached. At that time inside the worker node when **kube scheduler** scheudles pod, there is no available cpu and memory for it. So it remains **Pending Unschedulable** staus. At this point the **Cluster Autoscalar or Karepnter** look for such pods and if found it provisoned another worker node (EC2 instance) via the Auto Scaling Group for cluster Auto Scalar or EC2 Fleet for Karepenter. Now the kube-scheduler finds available cpu/memory for the pod which is pending and scheduled pod in the new worker node (EC2 instance).
 
 
 
 ## 2. Have you used Well Architected Framework and How
+Thanks for the question. 
 
+The AWS Well Architected Framwework is a set of best practices for customers and organizations to evaluate their cloud architecture on AWS so that it closely aligns to AWS Best Practices.
 
-## 3. How do you secure applications on AWS
+There are **Six** AWS Well Architected Pillar.
+- 1. Operational Excellence
+- 2. Security
+- 3. Reliability
+- 4. Performance Efficiency
+- 5. Cost Optimization
+- 6. Sustainability
+
+It is not a definitive but iterative process and should be reviewed periodically to intorduce changes and trade-offs wherever neccessary. It depends on the system requirements and the business priorrities. For example, if the system requirement or business priority is Reliability and Efficiency it will have an impact on Cost Optimization. If the priority is on Security then it can have an impact on Operational Excellence.
+
+One such example of a trade-off between the well architected pillar I encounterd recently was during the designing of a highly available and Performance Efficient Online Ticketing System. One of the requirements was that during high traffic days the Databse should be able to support the millions of transactions but on normal days the traffic can scale even to 0. For this inconsistent traffic requirement and to optimize costs we decided to use Aurora Serverless which can scale back to 0 ACUs if no requests are served and has the auto pause functionality. But to serve traffic on high traffic days or events, we connected it with a RDS Proxy so that the incoming requests are throttled through the connection pool so that the database is not overloaded. However, since the RDS proxy always keep open connection to database, the auto pause and zero scaling functionality of Aurora Serverless was never utilised and the DB was billed 24/7. This led to high AWS bills and we needed to replace the Aurora Serverless with Provisoned Aurora Cluster with Read Replicas.
+
+Another such example was using, Elasticache Serveless service to serve read request from lambdas inside the private VPCs. Since the lambdas were inside VPC, and Elasticache Serverless is not VPC bound, it created multiple vpc endpoints per AZ to create connections to the lambda services. This resulted in high performance but the cost of vpc endpoint was too high. To mititgae it we needed to provision the Elasticache inside VPC which increased operational overhead but reduced costs, because now lambdas could directly talk to Elasticache without the need for VPC Endpoints.
+
 
 
 ## 4. What are some of the GenAI use cases we can implement
