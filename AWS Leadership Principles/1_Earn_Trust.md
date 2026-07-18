@@ -1,4 +1,7 @@
-# Earn Trust — Pricing Engine Incident (Revised)
+# Primary LP -  Earn Trust 
+# Secondary LP - Ownership
+
+# Story - Pricing Engine Incident (Revised)
 
 ## Situation
 I owned the Pricing and Discount Engine for a greenfield CRM and Order Management migration for a large telco (10M subscribers). Under normal load the engine handled roughly 1M catalog/pricing lookups a day — from app opens, USSD/IVR self-care, retail POS terminals, and partner reseller APIs — averaging around 12 RPS. It needed to support predictable festival peaks. I chose a Lambda-based design for cost and simplicity, and it worked well in staging and on normal days.

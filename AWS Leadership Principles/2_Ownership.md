@@ -1,4 +1,7 @@
-# Ownership — ECDE Data Approval Story
+# Primary LP - Ownership
+# Seconday LP - Bias for Action
+
+# Story - Ownership — ECDE Data Approval Story
 
 > **Fill in the bracketed [ ] placeholders with real numbers before using this — an invented metric that falls apart under a follow-up will hurt you more than an honest, smaller one.**
 
